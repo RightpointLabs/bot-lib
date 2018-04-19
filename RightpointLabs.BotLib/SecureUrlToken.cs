@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Web;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Bson;
 
@@ -38,7 +39,7 @@ namespace RightpointLabs.BotLib
                     using (var bsonWriter = new BsonWriter(gzipStream))
                         JsonSerializer.CreateDefault().Serialize(bsonWriter, item);
                 }
-                return HttpServerUtility.UrlTokenEncode(rsa.Encrypt(memoryStream.ToArray(), true));
+                return Base64UrlEncoder.Encode(rsa.Encrypt(memoryStream.ToArray(), true));
             }
         }
 
@@ -53,7 +54,7 @@ namespace RightpointLabs.BotLib
             if (string.IsNullOrEmpty(key))
                 throw new Exception("AppSetting 'EncryptionKey' is missing");
             rsa.ImportCspBlob(Convert.FromBase64String(key));
-            var data = HttpServerUtility.UrlTokenDecode(token);
+            var data = Base64UrlEncoder.DecodeBytes(token);
             data = rsa.Decrypt(data, true);
 
             using (var memoryStream = new MemoryStream(data))

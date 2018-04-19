@@ -107,6 +107,11 @@ namespace RightpointLabs.BotLib
             return null;
         }
 
+        public ITraceActivity AsTraceActivity()
+        {
+            throw null;
+        }
+
         public string Type { get; set; }
         public string Id { get; set; }
         public string ServiceUrl { get; set; }
