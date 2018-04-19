@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using RightpointLabs.BotLib.Extensions;
 
 namespace RightpointLabs.BotLib.Dialogs
 {

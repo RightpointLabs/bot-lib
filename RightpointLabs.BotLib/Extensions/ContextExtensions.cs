@@ -6,7 +6,7 @@ using System.Configuration;
 using System.Linq;
 using System.Web;
 
-namespace RightpointLabs.BotLib
+namespace RightpointLabs.BotLib.Extensions
 {
     public static class ContextExtensions
     {
