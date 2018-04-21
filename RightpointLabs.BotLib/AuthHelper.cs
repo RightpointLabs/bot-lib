@@ -21,21 +21,18 @@ namespace RightpointLabs.BotLib
             public string session_state { get; set; }
         }
 
-        public static Task<HttpResponseMessage> Process(Uri requestUri, AuthorizeArgs args)
+        public static Task<string> Process(Uri requestUri, AuthorizeArgs args)
         {
             return Process(requestUri, args.state, args.code, args.error, args.error_description);
         }
 
-        public static async Task<HttpResponseMessage> Process(Uri requestUri, string state, string code, string error, string error_description)
+        public static async Task<string> Process(Uri requestUri, string state, string code, string error, string error_description)
         {
             var cookie = SecureUrlToken.Decode<LoginState>(state);
             if (!string.IsNullOrEmpty(error))
             {
                 await Conversation.ResumeAsync(cookie.State, new AuthenticationResultActivity(cookie.State.GetPostToUserMessage()) { Error = error, ErrorDescription = error_description });
-                return new HttpResponseMessage(HttpStatusCode.OK)
-                {
-                    Content = new StringContent("<html><head><script type='text/javascript'>window.close();</script></head><body>An error occurred during authentication.  You can close this browser window</body></html>", Encoding.UTF8, "text/html")
-                };
+                return "<html><head><script type='text/javascript'>window.close();</script></head><body>An error occurred during authentication.  You can close this browser window</body></html>";
             }
 
             string securityCode = null;
@@ -52,17 +49,11 @@ namespace RightpointLabs.BotLib
 
             if (string.IsNullOrEmpty(securityCode))
             {
-                return new HttpResponseMessage(HttpStatusCode.OK)
-                {
-                    Content = new StringContent("<html><head><script type='text/javascript'>window.close();</script></head><body>You can close this browser window</body></html>", Encoding.UTF8, "text/html")
-                };
+                return "<html><head><script type='text/javascript'>window.close();</script></head><body>You can close this browser window</body></html>";
             }
             else
             {
-                return new HttpResponseMessage(HttpStatusCode.OK)
-                {
-                    Content = new StringContent($"<html><head></head><body>Please copy and paste this key into the conversation with the bot: {securityCode}.</body></html>", Encoding.UTF8, "text/html")
-                };
+                return $"<html><head></head><body>Please copy and paste this key into the conversation with the bot: {securityCode}.</body></html>";
             }
         }
     }
