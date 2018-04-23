@@ -27,7 +27,7 @@ namespace RightpointLabs.BotLib
         public static string Encode<T>(T item)
         {
             var rsa = new RSACryptoServiceProvider();
-            var key = ConfigurationManager.AppSettings["EncryptionKey"];
+            var key = Config.GetAppSetting("EncryptionKey");
             if (string.IsNullOrEmpty(key))
                 throw new Exception("AppSetting 'EncryptionKey' is missing");
             rsa.ImportCspBlob(Convert.FromBase64String(key));
@@ -50,7 +50,7 @@ namespace RightpointLabs.BotLib
         public static T Decode<T>(string token)
         {
             var rsa = new RSACryptoServiceProvider();
-            var key = ConfigurationManager.AppSettings["EncryptionKey"];
+            var key = Config.GetAppSetting("EncryptionKey");
             if (string.IsNullOrEmpty(key))
                 throw new Exception("AppSetting 'EncryptionKey' is missing");
             rsa.ImportCspBlob(Convert.FromBase64String(key));

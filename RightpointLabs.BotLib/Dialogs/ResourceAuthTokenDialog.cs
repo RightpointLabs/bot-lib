@@ -67,12 +67,12 @@ namespace RightpointLabs.BotLib.Dialogs
         {
             var appAccessToken = await awaitableArgument;
 
-            var idaClientId = ConfigurationManager.AppSettings["ClientId"];
-            var idaClientSecret = ConfigurationManager.AppSettings["ClientSecret"];
+            var idaClientId = Config.GetAppSetting("ClientId");
+            var idaClientSecret = Config.GetAppSetting("ClientSecret");
 
             var clientCredential = new ClientCredential(idaClientId, idaClientSecret);
             var userAssertion = new UserAssertion(appAccessToken);
-            var authenticationContext = new AuthenticationContext(ConfigurationManager.AppSettings["Authority"], new UserTokenCache(context.UserData));
+            var authenticationContext = new AuthenticationContext(Config.GetAppSetting("Authority"), new UserTokenCache(context.UserData));
 
             // try silent again - we may have pre-loaded it as we completed auth - no harm in trying
             var lastUniqueId = context.GetLastUniqueId();

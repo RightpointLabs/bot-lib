@@ -67,9 +67,9 @@ namespace RightpointLabs.BotLib.Dialogs
 
         private async Task<Uri> GetAuthUrl(IDialogContext context, IMessageActivity activity)
         {
-            var authority = ConfigurationManager.AppSettings["Authority"];
+            var authority = Config.GetAppSetting("Authority");
             var p = new Dictionary<string, string>();
-            p["client_id"] = ConfigurationManager.AppSettings["ClientId"];
+            p["client_id"] = Config.GetAppSetting("ClientId");
             p["redirect_uri"] = GetRedirectUri();
             p["response_mode"] = "form_post";
             p["response_type"] = "code";

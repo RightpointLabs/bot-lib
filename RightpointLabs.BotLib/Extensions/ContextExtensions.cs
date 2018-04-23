@@ -41,7 +41,7 @@ namespace RightpointLabs.BotLib.Extensions
 
         public static AuthenticationContext GetAuthenticationContext(this IDialogContext context)
         {
-            var ctx = new AuthenticationContext(ConfigurationManager.AppSettings["Authority"], new UserTokenCache(context.UserData));
+            var ctx = new AuthenticationContext(Config.GetAppSetting("Authority"), new UserTokenCache(context.UserData));
             ctx.ExtendedLifeTimeEnabled = true;
             return ctx;
         }
@@ -49,8 +49,8 @@ namespace RightpointLabs.BotLib.Extensions
         public static ClientCredential GetClientCredential(this IDialogContext context)
         {
             return new ClientCredential(
-                ConfigurationManager.AppSettings["ClientId"],
-                ConfigurationManager.AppSettings["ClientSecret"]);
+                Config.GetAppSetting("ClientId"),
+                Config.GetAppSetting("ClientSecret"));
         }
     }
 }
