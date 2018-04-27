@@ -56,6 +56,19 @@ namespace RightpointLabs.BotLib.Services
             });
         }
 
+        protected virtual async Task<(string, byte[])> GetData(string url)
+        {
+            return await MakeRequest(client => client.GetAsync(new Uri(Url, url).AbsoluteUri), async resp =>
+            {
+                resp.EnsureSuccessStatusCode();
+
+                var contentType = resp.Content.Headers.ContentType.MediaType;
+                var data = await resp.Content.ReadAsByteArrayAsync();
+
+                return (contentType, data);
+            });
+        }
+
         /// <summary>
         /// Override this to provide credentials for all calls.
         /// </summary>
